@@ -8,13 +8,43 @@
 			<router-link to="/goals"><div>Goals</div></router-link>
 		</nav>
 		<main>
-			<router-view/>
+			<router-view v-if="loggedIn"/>
+			<div v-else id="login">
+				<div id="loginGrid">
+					<p>Username:</p>
+					<input ref="username" type="text"/>
+					<p>Password:</p>
+					<input ref="password" type="password"/>
+				</div>
+				<div id="submit">
+					<button @click="login">Login</button>
+					<button @click="register">Register new user</button>
+				</div>
+			</div>
 		</main>
 		<footer>
 			<p class="dim">Taylor Plewe | <a href="https://github.com/taylorplewe/cp4">https://github.com/taylorplewe/cp4</a></p>
 		</footer>
 	</div>
 </template>
+
+<script>
+export default {
+	data: function() {
+		return {
+			loggedIn: false
+		}
+	},
+	methods: {
+		login: function() {
+			console.log("login");
+		},
+		register: function() {
+			console.log("register");
+		}
+	}
+}
+</script>
 
 <style>
 body {
@@ -86,6 +116,27 @@ footer {
 	text-align: center;
 }
 
+
+#loginGrid {
+	display: grid;
+	grid-template-columns: 50% 50%;
+	row-gap: 1rem;
+	column-gap: 1rem;
+	width: 50%;
+	margin: 1rem auto;
+}
+#loginGrid > p {
+	text-align: right;
+	margin: 0;
+}
+#submit {
+	margin: auto;
+	width: max-content;
+}
+#submit > * {
+	margin: 0.5rem;
+}
+
 @media (max-width: 980px) {
 	body {
 		margin: 0;
@@ -104,6 +155,9 @@ footer {
 	}
 	main {
 		width: 100%;
+	}
+	#loginGrid {
+		width: 70%;
 	}
 }
 

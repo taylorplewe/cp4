@@ -1,4 +1,7 @@
 const { defineConfig } = require('@vue/cli-service')
-module.exports = defineConfig({
-  transpileDependencies: true
-})
+module.exports = {
+	devServer: {
+		host: "cp4.tp260.click",
+		proxy: 'https://cp4.tp260.click:3000'
+	}
+}

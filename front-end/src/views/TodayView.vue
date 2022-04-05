@@ -38,7 +38,8 @@
 
 <script>
 // @ is an alias to /src
-import Item from '@/components/Item.vue'
+import Item from '@/components/Item.vue';
+import axios from 'axios';
 
 export default {
 	name: 'TodayView',
@@ -118,7 +119,19 @@ export default {
 				this.totCarbs += item.carbs;
 				this.totFat += item.fat;
 			})
+		},
+		async getAllItems() {
+			try {
+				let res = await axios.get('/api/items');
+				console.log(res.data);
+			} catch(e) {
+				console.log(e);
+				
+			}
 		}
+	},
+	created: function() {
+		this.getAllItems();
 	},
 	mounted: function() {
 		this.calcTotals();

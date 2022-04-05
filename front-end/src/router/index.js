@@ -24,7 +24,7 @@ const routes = [
 		path: '/goals',
 		name: 'goals',
 		component: GoalsView
-	}
+	},
 ]
 
 const router = createRouter({
