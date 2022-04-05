@@ -20,6 +20,13 @@
 		column-gap: 2rem;
 		row-gap: 2rem;
 	}
+
+	@media (max-width: 980px) {
+		.days {
+			display: revert;
+			padding: 0 1rem;
+		}
+	}
 </style>
 
 <script>

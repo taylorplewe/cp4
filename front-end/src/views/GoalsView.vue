@@ -28,6 +28,15 @@
 	.goals > p {
 		text-align: right;
 	}
+
+	@media (max-width: 980px) {
+		.goals {
+			width: 100%;
+		}
+		p {
+			font-size: 12pt;
+		}
+	}
 </style>
 
 <script>

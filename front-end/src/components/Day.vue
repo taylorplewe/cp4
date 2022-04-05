@@ -3,7 +3,7 @@
 		<h1>{{date}}</h1>
 		<div class="dark">
 			<p class="dim">cals</p>
-			<p class="dim">prot.</p>
+			<p class="dim">protein</p>
 			<p class="dim">carbs</p>
 			<p class="dim">fat</p>
 			<p>{{cals}}</p>
@@ -28,6 +28,10 @@
 	}
 	.dark > p {
 		margin: 0;
+	}
+
+	@media (max-width: 980px) {
+		
 	}
 </style>
 

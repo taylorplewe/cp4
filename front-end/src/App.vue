@@ -86,4 +86,25 @@ footer {
 	text-align: center;
 }
 
+@media (max-width: 980px) {
+	body {
+		margin: 0;
+	}
+	nav {
+		width: 100%;
+		display: revert;
+	}
+	.itemGrid {
+		grid-template-columns: 22% 26% 13% 13% 13% 13%;
+		padding: 1rem 0;
+		column-gap: 0;
+	}
+	.itemGrid > p {
+		font-size: 12pt;
+	}
+	main {
+		width: 100%;
+	}
+}
+
 </style>

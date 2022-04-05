@@ -2,11 +2,12 @@
 	<div class="today" v-if="render">
 		<h1>{{date}}</h1>
 
+		<!-- column headers -->
 		<div class="itemGrid" style="font-style: italic;">
 			<div></div>
 			<p>food name</p>
 			<p>cals</p>
-			<p>protein</p>
+			<p>prot.</p>
 			<p>carbs</p>
 			<p>fat</p>
 		</div>
