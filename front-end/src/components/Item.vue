@@ -2,24 +2,24 @@
 	<div class="item itemGrid">
 		<div><slot></slot></div> <!-- where a label could go -->
 
-		<input v-model="name" type="text" v-if="editable"/>
+		<input v-model="name" @change="emitUpdate" type="text" v-if="editable"/>
 		<select v-else-if="nameDropdown" v-model="name" ref="drop" @change="updateVals">
 			<option disabled selected value>(pick a food item)</option>
 			<option v-for="(item, ind) in items" :key="ind">{{item.name}}</option>
 		</select>
 		<p v-else>{{name}}</p>
 
-		<input v-model="cals" type="number" v-if="editable"/>
-		<p v-else>{{cals ? cals : '--'}}</p>
+		<input v-model="cals" @change="emitUpdate" type="number" v-if="editable"/>
+		<p v-else>{{cals != null ? cals : '--'}}</p>
 
-		<input v-if="editable" v-model="prot" type="number"/>
-		<p v-else>{{prot ? `${prot} g` : '--'}}</p>
+		<input v-if="editable" @change="emitUpdate" v-model="prot" type="number"/>
+		<p v-else>{{prot != null ? `${prot} g` : '--'}}</p>
 
-		<input v-model="carbs" type="number" v-if="editable"/>
-		<p v-else>{{carbs ? carbs : '--'}}</p>
+		<input v-model="carbs" @change="emitUpdate" type="number" v-if="editable"/>
+		<p v-else>{{carbs != null ? carbs : '--'}}</p>
 
-		<input v-if="editable" v-model="fat" type="number"/>
-		<p v-else>{{fat ? `${fat} g` : '--'}}</p>
+		<input v-if="editable" @change="emitUpdate" v-model="fat" type="number"/>
+		<p v-else>{{fat != null ? `${fat} g` : '--'}}</p>
 
 	</div>
 </template>
@@ -62,6 +62,10 @@ export default {
 			type: Number,
 			default: null
 		},
+		idProp: {
+			type: String,
+			default: null
+		},
 		items: {
 			type: Array,
 			default: null
@@ -74,6 +78,7 @@ export default {
 			prot: this.protProp,
 			carbs: this.carbsProp,
 			fat: this.fatProp,
+			id: this.idProp
 		}
 	},
 	methods: {
@@ -83,6 +88,10 @@ export default {
 			this.prot = this.items[ind].prot;
 			this.carbs = this.items[ind].carbs;
 			this.fat = this.items[ind].fat;
+			this.id = this.items[ind]._id
+		},
+		emitUpdate: function() {
+			this.$emit("updateVals");
 		}
 	}
 }

@@ -1,13 +1,14 @@
 <template>
-	<div class="goals">
+	<p v-if="loading" class="loading">Fetching data...</p>
+	<div class="goals" v-else>
 		<p>daily calories goal:</p>
-		<input type="number" v-model="cals"/>
+		<input type="number" @change="updateGoals" v-model="cals"/>
 		<p>daily protein goal:</p>
-		<input type="number" v-model="prot"/>
+		<input type="number" @change="updateGoals" v-model="prot"/>
 		<p>daily carbs goal:</p>
-		<input type="number" v-model="carbs"/>
+		<input type="number" @change="updateGoals" v-model="carbs"/>
 		<p>daily fat goal:</p>
-		<input type="number" v-model="fat"/>
+		<input type="number" @change="updateGoals" v-model="fat"/>
 	</div>
 </template>
 
@@ -41,7 +42,7 @@
 
 <script>
 // @ is an alias to /src
-//import HelloWorld from '@/components/HelloWorld.vue'
+import axios from 'axios';
 
 export default {
 	name: 'GoalsView',
@@ -50,8 +51,49 @@ export default {
 			cals: null,
 			prot: null,
 			carbs: null,
-			fat: null
+			fat: null,
+			uid: "",
+			loading: 0
 		}
+	},
+	methods: {
+		async getGoals() {
+			try {
+				this.loading++;
+				let goals = await axios.get('/api/goals/' + this.uid);
+				if (goals.data) {
+					this.cals = goals.data.cals;
+					this.prot = goals.data.prot;
+					this.carbs = goals.data.carbs;
+					this.fat = goals.data.fat;
+				} else {
+					// create a set of goals
+					await axios.post('/api/goals/' + this.uid);
+				}
+			} catch(e) {
+				console.error(e);
+			} finally { this.loading--; }
+		},
+		async updateGoals() {
+			try {
+				await axios.put('/api/goals/' + this.uid, {
+					cals: this.cals,
+					prot: this.prot,
+					carbs: this.carbs,
+					fat: this.fat
+				});
+			} catch(e) {
+				console.error(e);
+			}
+		}
+	},
+	created: function() {
+		// first get user ID from URL
+		const url = new URLSearchParams(location.search);
+		this.uid = url.get("uid");
+
+		// then get goals from user
+		this.getGoals();
 	}
 }
 </script>

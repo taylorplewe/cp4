@@ -1,5 +1,6 @@
 <template>
-	<div>
+	<p v-if="loading" class="loading">Fetching data...</p>
+	<div v-else>
 		<div class="days">
 			<Day v-for="(day, ind) in days" :key="ind"
 				:date="day.date"
@@ -32,28 +33,28 @@
 <script>
 const exdays = [
 	{
-		date: "4/1/2022",
+		date: "4-1-2022",
 		cals: 50,
 		prot: 60,
 		carbs: 618,
 		fat: 40
 	},
 	{
-		date: "4/2/2022",
+		date: "4-2-2022",
 		cals: 80,
 		prot: 45,
 		carbs: 241,
 		fat: 46
 	},
 	{
-		date: "4/3/2022",
+		date: "4-3-2022",
 		cals: 963,
 		prot: 85,
 		carbs: 714,
 		fat: 12
 	},
 	{
-		date: "3/28/2022",
+		date: "3-28-2022",
 		cals: 695,
 		prot: 554,
 		carbs: 71,
@@ -63,6 +64,7 @@ const exdays = [
 
 // @ is an alias to /src
 import Day from '@/components/Day.vue'
+import axios from 'axios';
 
 export default {
 	name: 'DaysView',
@@ -71,8 +73,40 @@ export default {
 	},
 	data: function() {
 		return {
-			days: exdays
+			days: exdays,
+			uid: "",
+			loading: 0
 		}
+	},
+	methods: {
+		async getDays() {
+			try {
+				this.loading++;
+				let res = await axios.get('/api/days/' + this.uid);
+				if (res.data) {
+					this.days = [...res.data, ...this.days];
+					this.orderDates();
+				}
+			} catch (e) {
+				console.error(e);
+			} finally { this.loading--; }
+		},
+		orderDates() {
+			this.days.sort((dayA, dayB) => {
+				let dayObjA = new Date(dayA.date);
+				let dayObjB = new Date(dayB.date);
+				let res = dayObjB.valueOf() - dayObjA.valueOf();
+				return res;
+			});
+		}
+	},
+	created: function() {
+		// first get user ID from URL
+		const url = new URLSearchParams(location.search);
+		this.uid = url.get("uid");
+
+		// then get data for user
+		this.getDays();
 	}
 }
 </script>
