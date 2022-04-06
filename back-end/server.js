@@ -93,7 +93,7 @@ app.post('/api/users', async (req, res) => {
 
 		// immediately create set of goals for person
 		const goals = new Goals({
-			userID: r.data._id
+			userID: r._id
 		});
 		await goals.save();
 		res.send(user);
@@ -202,10 +202,9 @@ app.get('/api/days/:uid', async (req, res) => {
 		res.sendStatus(500);
 	}
 });
-app.get('/api/days/today/:uid', async (req, res) => {
+app.get('/api/today/:date/:uid', async (req, res) => {
 	try {
-		let today = new Date();
-		let day = await Day.findOne({date: today.toLocaleDateString('en-US').replace(/\//g, '-'), userID: req.params.uid});
+		let day = await Day.findOne({date: req.params.date, userID: req.params.uid});
 		if (day) {
 			let items = await Item.find({userID: req.params.uid});
 			if (items && day.items) {

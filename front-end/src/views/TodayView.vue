@@ -135,7 +135,11 @@ export default {
 		async getTodaysItems() {
 			try {
 				this.loading++;
-				let res = await axios.get('/api/days/today/' + this.uid);
+				let today = new Date();
+				today = today.toLocaleDateString('en-US');
+				today = today.replace(/\//g, '-');
+				let res = await axios.get('/api/today/' + today + '/' + this.uid);
+				console.log(res);
 				if (res.data) {
 					console.log(res.data);
 					this.todaysItems = res.data.items;
